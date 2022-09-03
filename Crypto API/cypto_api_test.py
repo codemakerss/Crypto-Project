@@ -36,7 +36,7 @@ data_3 = data["Time Series Crypto (5min)"]
 d2 = pd.DataFrame.from_dict(data_3, orient='index') 
 d2 = d2.rename(columns={'1. open':'OPEN','2. high':'HIGH','3. low':'LOW','4. close':'CLOSE','5. volume':'VOLUME'})
 print(d2)
-
+# https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=CNY&apikey="BF4TLBIGC0D0F8RY"
 # data_1 = intraday_data.items()
 # info_list = []
 # for i in data_1:
