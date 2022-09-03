@@ -60,20 +60,19 @@ class CrytoAPI(object):
                 if (day_time.lower() == "daily"):
                     crypto_day_time_data = data["Time Series (Digital Currency Daily)"]
                 elif (day_time.lower() == "weekly"):
-                    crypto_day_time_data = data["Time Series (Digital Currency Daily)"]
+                    crypto_day_time_data = data["Time Series (Digital Currency Weekly)"]
                 elif (day_time.lower() == "monthly"):
-                    crypto_day_time_data = data["Time Series (Digital Currency Daily)"]
+                    crypto_day_time_data = data["Time Series (Digital Currency Monthly)"]
             except:
                 raise Exception("Fail to retrieve " + crypto + " json data !")  
             
-
-            crypto_daily_data_full = pd.DataFrame.from_dict(crypto_day_time_data, orient='index') 
-            crypto_daily_data_full = crypto_daily_data_full.rename(columns={'1a. open (' + self.market_currency + ')':'OPEN (' + self.market_currency + ')', \
+            crypto_day_time_data_full = pd.DataFrame.from_dict(crypto_day_time_data, orient='index') 
+            crypto_day_time_data_full = crypto_day_time_data_full.rename(columns={'1a. open (' + self.market_currency + ')':'OPEN (' + self.market_currency + ')', \
             '1b. open (USD)' : 'OPEN (USD)', '2a. high (' + self.market_currency + ')':'HIGH (' + self.market_currency + ')', '2b. high (USD)' : 'HIGH (USD)', 
             '3a. low (' + self.market_currency + ')':'LOW (' + self.market_currency + ')', '3b. low (USD)':'LOW (USD)', '4a. close (' + self.market_currency + ')':'CLOSE (' + self.market_currency + ')', \
             '4b. close (USD)':'CLOSE (USD)','5. volume':'VOLUME', '6. market cap (USD)':'MARKET CAP (USD)'})
         
-            return crypto_info, crypto_daily_data_full
+            return crypto_info, crypto_day_time_data_full
         except:
             raise Exception("Fail to retrieve " + crypto + "data !")
 
