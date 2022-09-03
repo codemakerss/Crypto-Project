@@ -9,7 +9,8 @@
 # print('Exchanges')
 
 
-
+#import platform    
+#platform.python_implementation()
 
 
 from locale import currency
@@ -60,4 +61,5 @@ print(d2)
 # col_name.insert(0,"Symbol")
 # df_new = df_new.reindex(columns=col_name)
 # df_new["Symbol"] = stock_id
-
+import os
+print(os.popen('which python').read())
