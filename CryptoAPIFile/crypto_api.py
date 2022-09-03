@@ -1,9 +1,5 @@
 from crypt import crypt
-from logging import raiseExceptions
-from msilib.schema import Error
 from pandas.core.frame import DataFrame
-from locale import currency
-from mimetypes import init
 import requests
 import pandas as pd 
 
