@@ -16,19 +16,22 @@ class CrytoAPI(object):
         self.market_currency = market_currency
 
     def Get_Crypto_Interval_Price(self, crypto : str, interval : str) -> DataFrame:
-        base_url = 'https://www.alphavantage.co/query?'
-        params = {"function": "CRYPTO_INTRADAY", "symbol": crypto, "market": self.market_currency,"interval": interval, "outputsize": "full","apikey": self.apikey}
-        response = requests.get(base_url, params=params)
-        data = response.json() # dict
-     
-        intraday_data = data["Meta Data"]
-        crypto_info = pd.DataFrame.from_dict(intraday_data, orient='index', columns=['info']) 
-        crypto_interval_data = data["Time Series Crypto ("+ interval +")"]
+        try:
+            base_url = 'https://www.alphavantage.co/query?'
+            params = {"function": "CRYPTO_INTRADAY", "symbol": crypto, "market": self.market_currency,"interval": interval, "outputsize": "full","apikey": self.apikey}
+            response = requests.get(base_url, params=params)
+            data = response.json() # dict
+        
+            intraday_data = data["Meta Data"]
+            crypto_info = pd.DataFrame.from_dict(intraday_data, orient='index', columns=['info']) 
+            crypto_interval_data = data["Time Series Crypto ("+ interval +")"]
 
-        crypto_interval_data_full = pd.DataFrame.from_dict(crypto_interval_data, orient='index') 
-        crypto_interval_data_full = crypto_interval_data_full.rename(columns={'1. open':'OPEN','2. high':'HIGH','3. low':'LOW','4. close':'CLOSE','5. volume':'VOLUME'})
-    
-        return crypto_info, crypto_interval_data_full
+            crypto_interval_data_full = pd.DataFrame.from_dict(crypto_interval_data, orient='index') 
+            crypto_interval_data_full = crypto_interval_data_full.rename(columns={'1. open':'OPEN','2. high':'HIGH','3. low':'LOW','4. close':'CLOSE','5. volume':'VOLUME'})
+        
+            return crypto_info, crypto_interval_data_full
+        except:
+            raise Exception("Fail to retrieve crypto " + interval + " interval data !")
 
     def Get_Crypto_Daily_Weekly_Monthly_Price(self, crypto : str, day_time : str) -> DataFrame:
         try:
