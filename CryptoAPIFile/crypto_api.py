@@ -1,4 +1,6 @@
 from crypt import crypt
+from logging import raiseExceptions
+from msilib.schema import Error
 from pandas.core.frame import DataFrame
 from locale import currency
 from mimetypes import init
@@ -32,23 +34,50 @@ class CrytoAPI(object):
     
         return crypto_info, crypto_interval_data_full
 
-    def Get_Crypto_Daily_Price(self, crypto : str) -> DataFrame:
-        base_url = 'https://www.alphavantage.co/query?'
-        params = {"function": "DIGITAL_CURRENCY_DAILY", "symbol": crypto, "market": self.market_currency,"apikey": self.apikey}
-        response = requests.get(base_url, params=params)
-        data = response.json() # dict
-        
-        daily_data = data["Meta Data"]
-        crypto_info = pd.DataFrame.from_dict(daily_data, orient='index', columns=['info']) 
-        crypto_interval_data = data["Time Series (Digital Currency Daily)"]
+    def Get_Crypto_Daily_Weekly_Monthly_Price(self, crypto : str, day_time : str) -> DataFrame:
+        try:
+            try:
+                # check day time and output error 
+                if (day_time.lower() == "daily"):
+                    params = {"function": "DIGITAL_CURRENCY_DAILY", "symbol": crypto, "market": self.market_currency,"apikey": self.apikey}
+                elif (day_time.lower() == "weekly"):
+                    params = {"function": "DIGITAL_CURRENCY_WEEKLY", "symbol": crypto, "market": self.market_currency,"apikey": self.apikey}
+                elif (day_time.lower() == "monthly"):
+                    params = {"function": "DIGITAL_CURRENCY_MONTHLY", "symbol": crypto, "market": self.market_currency,"apikey": self.apikey}
+            except:
+                raise Exception("Error in day time choose !") 
 
-        crypto_daily_data_full = pd.DataFrame.from_dict(crypto_interval_data, orient='index') 
-        crypto_daily_data_full = crypto_daily_data_full.rename(columns={'1a. open (' + self.market_currency + ')':'OPEN (' + self.market_currency + ')', \
-        '1b. open (USD)' : 'OPEN (USD)', '2a. high (' + self.market_currency + ')':'HIGH (' + self.market_currency + ')', '2b. high (USD)' : 'HIGH (USD)', 
-        '3a. low (' + self.market_currency + ')':'LOW (' + self.market_currency + ')', '3b. low (USD)':'LOW (USD)', '4a. close (' + self.market_currency + ')':'CLOSE (' + self.market_currency + ')', \
-        '4b. close (USD)':'CLOSE (USD)','5. volume':'VOLUME', '6. market cap (USD)':'MARKET CAP (USD)'})
+            # reorganize json data to DataFrame type
+            base_url = 'https://www.alphavantage.co/query?'
+            response = requests.get(base_url, params=params)
+            data = response.json() # dict
+            
+            daily_data = data["Meta Data"]
+            crypto_info = pd.DataFrame.from_dict(daily_data, orient='index', columns=['info'])
+
+            try:
+                # check day time and output error 
+                if (day_time.lower() == "daily"):
+                    crypto_day_time_data = data["Time Series (Digital Currency Daily)"]
+                elif (day_time.lower() == "weekly"):
+                    crypto_day_time_data = data["Time Series (Digital Currency Daily)"]
+                elif (day_time.lower() == "monthly"):
+                    crypto_day_time_data = data["Time Series (Digital Currency Daily)"]
+            except:
+                raise Exception("Fail to retrieve " + crypto + " json data !")  
+            
+
+            crypto_daily_data_full = pd.DataFrame.from_dict(crypto_day_time_data, orient='index') 
+            crypto_daily_data_full = crypto_daily_data_full.rename(columns={'1a. open (' + self.market_currency + ')':'OPEN (' + self.market_currency + ')', \
+            '1b. open (USD)' : 'OPEN (USD)', '2a. high (' + self.market_currency + ')':'HIGH (' + self.market_currency + ')', '2b. high (USD)' : 'HIGH (USD)', 
+            '3a. low (' + self.market_currency + ')':'LOW (' + self.market_currency + ')', '3b. low (USD)':'LOW (USD)', '4a. close (' + self.market_currency + ')':'CLOSE (' + self.market_currency + ')', \
+            '4b. close (USD)':'CLOSE (USD)','5. volume':'VOLUME', '6. market cap (USD)':'MARKET CAP (USD)'})
+        
+            return crypto_info, crypto_daily_data_full
+        except:
+            raise Exception("Fail to retrieve " + crypto + "data !")
+
     
-        return crypto_info, crypto_daily_data_full
 
 
 
