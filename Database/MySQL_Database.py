@@ -3,14 +3,32 @@ import mysql.connector
 import time
 import os 
 
-class MySQL_Connection(object):
+class MySQL_Database(object):
+    """
+    This class is for MySQL database build up and make connection
+
+    Attributes 
+    ----------
+    host : str
+    user : str
+    password : str 
+    database : str 
+
+    Methods
+    ----------
+    connect_database(self)
+        Connect to MySQL database and create database if not exists 
+    
+
+    
+    """
     def __init__(self, host : str, user : str, password :str, database : str) -> None:
         #self.apikey = apikey
         self.host = host
         self.user = user 
         self.password = password
         self.database = database
-    
+
     # Connect to the database
     def connect_database(self) -> mysql:
         try:
@@ -18,23 +36,27 @@ class MySQL_Connection(object):
             sql = 'USE ' + self.database
             cursor = db.cursor()
             cursor.execute(sql)
-            #print(self.database + ' database has already been connected! ')
+            print(self.database + ' database has already been connected! ')
             return db 
         except:
             db = mysql.connector.connect(host = self.host, user = self.user, password = self.password)
             sql = 'CREATE DATABASE ' + self.database
             cursor = db.cursor()
             cursor.execute(sql)
-            #print(self.database + ' database has already been successfully added in to MySQL! ')
+            print(self.database + ' database has already been successfully added in to MySQL! ')
             return db 
     
 class Data_to_SQL(object):
     # Call mysql connection and API here 
-    def __init__(self, mysql_connection : classmethod) -> None:
-        self.mysql_connection = mysql_connection.connect_database()
+    def __init__(self, mysql_database : classmethod) -> None:
+        self.mysql_connection = mysql_database.connect_database()
 
     # define table datatypes 
     def table_datatypes(self, table_name : str):
+        # Intraday columns Index['OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME']
+        # Others (daily, weekly, monthly) columns Index['OPEN (USD)', 'OPEN (USD)', \
+        # 'HIGH (USD)', 'HIGH (USD)', 'LOW (USD)','LOW (USD)', 'CLOSE (USD)', 'CLOSE (USD)', \
+        # 'VOLUME','MARKET CAP (USD)']
         try:
             if table_name == 'daily':
                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, symbol VARCHAR(255) NOT NULL, datetime DATE, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume int(11))'
