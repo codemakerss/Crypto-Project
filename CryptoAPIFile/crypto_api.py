@@ -9,7 +9,7 @@ apikey = "BF4TLBIGC0D0F8RY"
 # market_currency = "USD" 
 # interval = "5min"
 
-class CrytoAPI(object):
+class CryptoAPI(object):
     def __init__(self, apikey : str, market_currency : str):
         self.apikey = apikey
         #self.crypto = crypto
