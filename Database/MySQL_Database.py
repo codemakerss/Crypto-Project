@@ -1,5 +1,6 @@
 from pandas.core.frame import DataFrame
 import mysql.connector
+from mysql.connector import ProgrammingError
 import time
 import os 
 
@@ -39,15 +40,17 @@ class MySQL_Database(object):
             sql = 'USE ' + self.database
             cursor = db.cursor()
             cursor.execute(sql)
-            print(self.database + ' database has already been connected! ')
+            #print(self.database + ' database has already been connected! ')
             return db 
-        except:
+        except ProgrammingError:
             db = mysql.connector.connect(host = self.host, user = self.user, password = self.password)
             sql = 'CREATE DATABASE ' + self.database
             cursor = db.cursor()
             cursor.execute(sql)
             print(self.database + ' database has already been successfully added in to MySQL! ')
             return db 
+        except:
+            raise Exception("Fail to connect or create database. ")
     
     # define table datatypes 
     def table_datatypes(self, table_name : str):
