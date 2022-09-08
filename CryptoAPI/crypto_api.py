@@ -37,7 +37,7 @@ class CryptoAPI(object):
 
             # show information about the data output and time cost
             print(crypto_info,"\n")
-            print("time cose :  \n", time_cost)
+            print("time cose : ", time_cost, "\n")
 
             return crypto_interval_data_full
         except:
@@ -88,7 +88,7 @@ class CryptoAPI(object):
 
             # show information about the data output and time cost
             print(crypto_info,"\n")
-            print("time cose :  \n", time_cost)
+            print("time cose : ", time_cost, "\n")
             
             return crypto_day_time_data_full
         except:
