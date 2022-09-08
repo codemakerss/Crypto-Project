@@ -70,8 +70,11 @@ class CryptoAPI(object):
             '1b. open (USD)' : 'OPEN (USD)', '2a. high (' + self.market_currency + ')':'HIGH (' + self.market_currency + ')', '2b. high (USD)' : 'HIGH (USD)', 
             '3a. low (' + self.market_currency + ')':'LOW (' + self.market_currency + ')', '3b. low (USD)':'LOW (USD)', '4a. close (' + self.market_currency + ')':'CLOSE (' + self.market_currency + ')', \
             '4b. close (USD)':'CLOSE (USD)','5. volume':'VOLUME', '6. market cap (USD)':'MARKET CAP (USD)'})
-        
-            return crypto_info, crypto_day_time_data_full
+
+            # show information about the data output 
+            print(crypto_info,"\n")
+            
+            return crypto_day_time_data_full
         except:
             raise Exception("Fail to retrieve " + crypto + "data !")
 
