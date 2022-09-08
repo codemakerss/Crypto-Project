@@ -1,6 +1,7 @@
 from pandas.core.frame import DataFrame
 import mysql.connector
 from mysql.connector import ProgrammingError
+from mysql.connector import Error
 import time
 import os 
 
@@ -42,7 +43,7 @@ class MySQL_Database(object):
             cursor.execute(sql)
             #print(self.database + ' database has already been connected! ')
             return db 
-        except ProgrammingError:
+        except Error:
             db = mysql.connector.connect(host = self.host, user = self.user, password = self.password)
             sql = 'CREATE DATABASE ' + self.database
             cursor = db.cursor()
@@ -64,24 +65,36 @@ class MySQL_Database(object):
            
             elif table_name == 'intraday':
                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATETIME, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume INT(11))'
-            # elif table_name == 'Information':
-            #     table_datatype = '(Symbol VARCHAR(225) NOT NULL, AssetType VARCHAR(225), Name VARCHAR(225), Exchange VARCHAR(225), Country VARCHAR(225), Sector VARCHAR(225), Industry VARCHAR(225), IpoDate DATE, DelistingDate DATE NULL, Status VARCHAR(225), PRIMARY KEY (symbol))'   
-            # elif table_name == 'Digital Currency Code':
-            #     table_datatype = '(Symbol VARCHAR(225) NOT NULL PRIMARY KEY, Name VARCHAR(225), Type VARCHAR(225), Region VARCHAR(225), MarketOpen TIME, MarketClose TIME, Timezone VARCHAR(225), Currency VARCHAR(225), MatchScore DECIMAL(7,5))' 
+            elif table_name == 'digital_currency_list':
+                 table_datatype = '(crypto VARCHAR(225) NOT NULL, AssetType VARCHAR(225), Name VARCHAR(225), Exchange VARCHAR(225), Country VARCHAR(225), Sector VARCHAR(225), Industry VARCHAR(225), IpoDate DATE, DelistingDate DATE NULL, Status VARCHAR(225), PRIMARY KEY (symbol))'   
+            elif table_name == 'physical_currency_list':
+                 table_datatype = '(crypto VARCHAR(225) NOT NULL PRIMARY KEY, Name VARCHAR(225), Type VARCHAR(225), Region VARCHAR(225), MarketOpen TIME, MarketClose TIME, Timezone VARCHAR(225), Currency VARCHAR(225), MatchScore DECIMAL(7,5))' 
             # elif table_name == 'Digital Currency Name':
             #     table_datatype = '(symbol VARCHAR(225) NOT NULL, name VARCHAR(225), exchange VARCHAR(225), assetType VARCHAR(225), ipoDate DATE, delistingDate DATE NULL DEFAULT NULL, status VARCHAR(225), PRIMARY KEY (symbol))'  
             # elif table_name == 'Market Code':
-            #     table_datatype = '(symbol VARCHAR(225) NOT NULL PRIMARY KEY, name VARCHAR(225), ipoDate DATE, priceRangeLow DECIMAL(10,4), priceRangeHigh DECIMAL(10,4), currency VARCHAR(225), exchange VARCHAR(225))'
-            # elif table_name == 'Market Name':
-            #     table_datatype = ''
-            # elif table_name == 'Time Zone':
-            #     table_datatype = ''    
+            #     table_datatype = '(symbol VARCHAR(225) NOT NULL PRIMARY KEY, name VARCHAR(225), ipoDate DATE, priceRangeLow DECIMAL(10,4), priceRangeHigh DECIMAL(10,4), currency VARCHAR(225), exchange VARCHAR(225))'  
             # else:
             #     print('No data support! ')
             return table_datatype
         except:
             raise Exception("No datatype support !")
-            
+
+    def create_table(self, table_name : str) -> str:
+        try:
+            cursor = self.mysql_connection.cursor()
+            #for name in table_name:
+            try:
+                order = self.table_datatypes(table_name)
+                sql = 'CREATE TABLE ' + table_name + ' '+ order
+                cursor.execute(sql)
+                self.mysql_connection.commit()
+                print(table_name + ' table has already been successfully added in to MySQL! ')  
+            except Error as e:
+                raise(e)
+            self.mysql_connection.close()
+        except Error as e:
+            raise(e)
+
 class Data_to_SQL(object):
     # Call mysql connection and API here 
     def __init__(self, mysql_database : classmethod) -> None:
