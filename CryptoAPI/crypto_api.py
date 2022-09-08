@@ -11,12 +11,39 @@ apikey = "BF4TLBIGC0D0F8RY"
 # interval = "5min"
 
 class CryptoAPI(object):
+    """
+    This class is for retrieving crypto data from 
+    Alpha Vantage website 
+
+    Attributes 
+    ----------
+    apikey : str
+    market_currency : str
+
+    Methods
+    ----------
+    get_crypto_interval_price(self, crypto : str, interval : str)
+        return crypto interval data 
+
+    get_crypto_daily_weekly_monthly_price(self, crypto : str, day_time : str)
+        return cryto daily/weekly/monthly data
+    """
     def __init__(self, apikey : str, market_currency : str):
         self.apikey = apikey
         #self.crypto = crypto
         self.market_currency = market_currency
 
-    def Get_Crypto_Interval_Price(self, crypto : str, interval : str) -> DataFrame:
+    def get_crypto_interval_price(self, crypto : str, interval : str) -> DataFrame:
+        """
+        return crypto interval data in DataFrame format
+
+        Parameters 
+        ----------
+        crypto : str
+            cryptocurrency name in abbreviation
+        interval : str
+            choose time interval from 1min, 5min, 15min, 30min, 60min
+        """
         try:
             start = time.time()
             base_url = 'https://www.alphavantage.co/query?'
@@ -43,7 +70,17 @@ class CryptoAPI(object):
         except:
             raise Exception("Fail to retrieve crypto " + interval + " interval data !")
 
-    def Get_Crypto_Daily_Weekly_Monthly_Price(self, crypto : str, day_time : str) -> DataFrame:
+    def get_crypto_daily_weekly_monthly_price(self, crypto : str, day_time : str) -> DataFrame:
+        """
+        return crypto daily/weekly/monthly data in DataFrame format
+
+        Parameters 
+        ----------
+        crypto : str
+            cryptocurrency name in abbreviation
+        day_time : str
+            choose from daily/weekly/monthly
+        """
         try:
             start = time.time()
             try:
