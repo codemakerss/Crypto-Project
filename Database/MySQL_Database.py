@@ -81,7 +81,7 @@ class MySQL_Database(object):
             return table_datatype
         except:
             raise Exception("No datatype support !")
-    
+            
 class Data_to_SQL(object):
     # Call mysql connection and API here 
     def __init__(self, mysql_database : classmethod) -> None:
