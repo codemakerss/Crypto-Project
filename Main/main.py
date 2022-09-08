@@ -1,6 +1,6 @@
 from re import M
 from CryptoAPI.crypto_api import *
-from Database.mysql_database import *
+from Database.construct_database import *
 
 apikey = "BF4TLBIGC0D0F8RY"
 market_currency = "CNY"
@@ -12,10 +12,10 @@ CryptoAPI = CryptoAPI(apikey,market_currency)
 #print(result)
 
 # mysql connection test 
-host="localhost" 
-user="root"
-password="Dhy9904191asd@@" 
-database="crytodatatest"
+host="" 
+user=""
+password="" 
+database=""
 print(mysql.connector.connect(host = host, user = user, password = password, database = database))
 # MySQL_Database = MySQL_Database(host = host, user = user, password = password, database = database)
 # connection_test = MySQL_Database.connect_database()
