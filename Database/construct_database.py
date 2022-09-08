@@ -20,12 +20,13 @@ class MySQL_Database(object):
     Methods
     ----------
     connect_database(self)
-        Connect to MySQL database and create database if not exists 
+        connect to mysql database and create database if not exists 
     
-    Results
-    ----------
+    table_datatypes(self, table_name : str)
+        create database table datatypes
 
-    
+    create_table(self, table_name : str)
+        create tables by selecting the correct datatypes
     """
     def __init__(self, host : str, user : str, password :str, database : str) -> None:
         #self.apikey = apikey
@@ -36,6 +37,18 @@ class MySQL_Database(object):
 
     # Connect to the database
     def connect_database(self) -> mysql:
+        """
+        connect to mysql database if exsists
+        create new database if not
+
+        Parameters 
+        ----------
+        none
+        
+        Raises
+        ----------
+        raise mysql.connector errors 
+        """
         try:
             db = mysql.connector.connect(host = self.host, user = self.user, password = self.password)
             sql = 'USE ' + self.database
@@ -55,6 +68,18 @@ class MySQL_Database(object):
     
     # define table datatypes 
     def table_datatypes(self, table_name : str):
+        """
+        create mysql database table datatypes 
+
+        Parameters 
+        ----------
+        table_name : str
+            choose table name datatypes 
+        
+        Raises
+        ----------
+        raise mysql.connector errors 
+        """
         # Intraday columns Index['OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME']
         # Others (daily, weekly, monthly) columns Index['OPEN (USD)', 'OPEN (USD)', \
         # 'HIGH (USD)', 'HIGH (USD)', 'LOW (USD)','LOW (USD)', 'CLOSE (USD)', 'CLOSE (USD)', \
@@ -62,13 +87,12 @@ class MySQL_Database(object):
         try:
             if table_name == 'daily' or table_name == 'weekly' or table_name == 'monthly':
                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATE, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume int(11), marketcap int(11))'
-           
             elif table_name == 'intraday':
                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATETIME, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume INT(11))'
             elif table_name == 'digital_currency_list':
-                 table_datatype = '(crypto VARCHAR(225) NOT NULL, AssetType VARCHAR(225), Name VARCHAR(225), Exchange VARCHAR(225), Country VARCHAR(225), Sector VARCHAR(225), Industry VARCHAR(225), IpoDate DATE, DelistingDate DATE NULL, Status VARCHAR(225), PRIMARY KEY (symbol))'   
+                 table_datatype = '(crypto VARCHAR(225) NOT NULL PRIMARY KEY, name VARCHAR(225)'   
             elif table_name == 'physical_currency_list':
-                 table_datatype = '(crypto VARCHAR(225) NOT NULL PRIMARY KEY, Name VARCHAR(225), Type VARCHAR(225), Region VARCHAR(225), MarketOpen TIME, MarketClose TIME, Timezone VARCHAR(225), Currency VARCHAR(225), MatchScore DECIMAL(7,5))' 
+                 table_datatype = '(crypto VARCHAR(225) NOT NULL PRIMARY KEY, name VARCHAR(225)' 
             # elif table_name == 'Digital Currency Name':
             #     table_datatype = '(symbol VARCHAR(225) NOT NULL, name VARCHAR(225), exchange VARCHAR(225), assetType VARCHAR(225), ipoDate DATE, delistingDate DATE NULL DEFAULT NULL, status VARCHAR(225), PRIMARY KEY (symbol))'  
             # elif table_name == 'Market Code':
@@ -80,6 +104,18 @@ class MySQL_Database(object):
             raise Exception("No datatype support !")
 
     def create_table(self, table_name : str) -> str:
+        """
+        create mysql database tables 
+
+        Parameters 
+        ----------
+        table_name : str
+            choose table name users want to insert data for
+        
+        Raises
+        ----------
+        raise mysql.connector errors 
+        """
         try:
             cursor = self.mysql_connection.cursor()
             #for name in table_name:
@@ -95,10 +131,6 @@ class MySQL_Database(object):
         except Error as e:
             raise(e)
 
-class Data_to_SQL(object):
-    # Call mysql connection and API here 
-    def __init__(self, mysql_database : classmethod) -> None:
-        self.mysql_connection = mysql_database.connect_database()
 
     
         
