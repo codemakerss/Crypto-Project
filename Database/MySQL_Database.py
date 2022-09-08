@@ -3,6 +3,7 @@ import mysql.connector
 import time
 import os 
 
+
 class MySQL_Database(object):
     """
     This class is for MySQL database build up and make connection
