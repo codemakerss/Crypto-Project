@@ -1,8 +1,9 @@
 from crypt import crypt
 from pandas.core.frame import DataFrame
 import requests
+import time
 import pandas as pd 
-
+import datetime
 apikey = "BF4TLBIGC0D0F8RY"
 
 # stock_id = "ETH"
@@ -17,6 +18,7 @@ class CryptoAPI(object):
 
     def Get_Crypto_Interval_Price(self, crypto : str, interval : str) -> DataFrame:
         try:
+            start = time.time()
             base_url = 'https://www.alphavantage.co/query?'
             params = {"function": "CRYPTO_INTRADAY", "symbol": crypto, "market": self.market_currency,"interval": interval, "outputsize": "full","apikey": self.apikey}
             response = requests.get(base_url, params=params)
@@ -28,15 +30,22 @@ class CryptoAPI(object):
 
             crypto_interval_data_full = pd.DataFrame.from_dict(crypto_interval_data, orient='index') 
             crypto_interval_data_full = crypto_interval_data_full.rename(columns={'1. open':'OPEN','2. high':'HIGH','3. low':'LOW','4. close':'CLOSE','5. volume':'VOLUME'})
+            
+            # time cost
+            end = time.time()
+            time_cost= end - start
 
-            # show information about the data output 
+            # show information about the data output and time cost
             print(crypto_info,"\n")
+            print("time cose :  \n", time_cost)
+
             return crypto_interval_data_full
         except:
             raise Exception("Fail to retrieve crypto " + interval + " interval data !")
 
     def Get_Crypto_Daily_Weekly_Monthly_Price(self, crypto : str, day_time : str) -> DataFrame:
         try:
+            start = time.time()
             try:
                 # check day time and output error 
                 if (day_time.lower() == "daily"):
@@ -73,8 +82,13 @@ class CryptoAPI(object):
             '3a. low (' + self.market_currency + ')':'LOW (' + self.market_currency + ')', '3b. low (USD)':'LOW (USD)', '4a. close (' + self.market_currency + ')':'CLOSE (' + self.market_currency + ')', \
             '4b. close (USD)':'CLOSE (USD)','5. volume':'VOLUME', '6. market cap (USD)':'MARKET CAP (USD)'})
 
-            # show information about the data output 
+            # time cost
+            end = time.time()
+            time_cost= end - start
+
+            # show information about the data output and time cost
             print(crypto_info,"\n")
+            print("time cose :  \n", time_cost)
             
             return crypto_day_time_data_full
         except:

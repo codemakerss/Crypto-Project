@@ -20,6 +20,8 @@ class MySQL_Database(object):
     connect_database(self)
         Connect to MySQL database and create database if not exists 
     
+    Results
+    ----------
 
     
     """
