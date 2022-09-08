@@ -28,8 +28,10 @@ class CryptoAPI(object):
 
             crypto_interval_data_full = pd.DataFrame.from_dict(crypto_interval_data, orient='index') 
             crypto_interval_data_full = crypto_interval_data_full.rename(columns={'1. open':'OPEN','2. high':'HIGH','3. low':'LOW','4. close':'CLOSE','5. volume':'VOLUME'})
-        
-            return crypto_info, crypto_interval_data_full
+
+            # show information about the data output 
+            print(crypto_info,"\n")
+            return crypto_interval_data_full
         except:
             raise Exception("Fail to retrieve crypto " + interval + " interval data !")
 

@@ -8,7 +8,7 @@ market_currency = "USD"
 CryptoAPI = CryptoAPI(apikey,market_currency)
 #result = CryptoAPI.Get_Crypto_Daily_Weekly_Monthly_Price("BTC","monthly")
 result = CryptoAPI.Get_Crypto_Interval_Price("BTC","5min")
-print(result[0])
+print(result)
 
 # mysql connection test 
 # host="localhost" 
