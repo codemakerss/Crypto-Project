@@ -89,10 +89,10 @@ class MySQL_Database(object):
                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATE, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume int(11), marketcap int(11))'
             elif table_name == 'intraday':
                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATETIME, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume INT(11))'
-            elif table_name == 'digital_currency_list':
-                 table_datatype = '(crypto VARCHAR(225) NOT NULL PRIMARY KEY, name VARCHAR(225)'   
-            elif table_name == 'physical_currency_list':
-                 table_datatype = '(crypto VARCHAR(225) NOT NULL PRIMARY KEY, name VARCHAR(225)' 
+            elif table_name == 'digitalcurrencylist':
+                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(225) NOT NULL, name VARCHAR(225))'   
+            elif table_name == 'physicalcurrencylist':
+                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(225) NOT NULL, name VARCHAR(225))' 
             # elif table_name == 'Digital Currency Name':
             #     table_datatype = '(symbol VARCHAR(225) NOT NULL, name VARCHAR(225), exchange VARCHAR(225), assetType VARCHAR(225), ipoDate DATE, delistingDate DATE NULL DEFAULT NULL, status VARCHAR(225), PRIMARY KEY (symbol))'  
             # elif table_name == 'Market Code':
@@ -117,17 +117,18 @@ class MySQL_Database(object):
         raise mysql.connector errors 
         """
         try:
-            cursor = self.mysql_connection.cursor()
+            mysql_connection = self.connect_database()
+            cursor = mysql_connection.cursor()
             #for name in table_name:
             try:
                 order = self.table_datatypes(table_name)
                 sql = 'CREATE TABLE ' + table_name + ' '+ order
                 cursor.execute(sql)
-                self.mysql_connection.commit()
-                print(table_name + ' table has already been successfully added in to MySQL! ')  
+                mysql_connection.commit()
+                return table_name + ' table has already been successfully added in to MySQL! '
             except Error as e:
                 raise(e)
-            self.mysql_connection.close()
+            mysql_connection.close()
         except Error as e:
             raise(e)
 
