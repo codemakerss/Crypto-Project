@@ -133,12 +133,16 @@ class MySQL_Database(object):
         except Error as e:
             raise(e)
     
-    def reconstruct_inputs(self, original_input : DataFrame):
+    def reconstruct_inputs(self, table_name : str,original_input : DataFrame):
         """
         reconstruct the database inputs 
 
         Parameters 
         ----------
+        
+        table_name : str
+            choose the table needs to be reconstructed
+
         original_input : DataFrame
             original data from the api port online  
         
@@ -151,11 +155,15 @@ class MySQL_Database(object):
         # 'HIGH (CNY)', 'HIGH (USD)', 'LOW (CNY)', 'LOW (USD)', 
         # 'CLOSE (CNY)', 'CLOSE (USD)', 'VOLUME', 'MARKET CAP (USD)']
         try:
-            col_name = list(original_input)
-            # remove index 3,5,7,9
-            remove_index = [3,5,7,9]
-            for i in remove_index:
-                original_input.pop(col_name[i - 1])
+            # most often use time
+            lst = ["daily", "weekly", "monthly"]
+            if (table_name in lst):
+                col_name = list(original_input)
+                # remove index 3,5,7,9
+                remove_index = [3,5,7,9]
+                for i in remove_index:
+                    original_input.pop(col_name[i - 1])
+        
         except:
             raiseExceptions("Fail to reconstruct the original data.")
 
