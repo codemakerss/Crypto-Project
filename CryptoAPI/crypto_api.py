@@ -63,6 +63,9 @@ class CryptoAPI(object):
             time_cost= end - start
 
             # reconstruct dataframe to match with the mysql database format
+            crypto_interval_data_full.reset_index(inplace=True)
+            crypto_interval_data_full = crypto_interval_data_full.rename(columns = {'index':'DATETIME'})
+            
             symbol_list = []
             r,c = crypto_interval_data_full.shape
             for i in range(r):
