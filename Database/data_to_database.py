@@ -25,17 +25,15 @@ class Data_to_SQL(object):
     def __init__(self, mysql_database : classmethod) -> None:
         self.mysql_connection = mysql_database.connect_database()
 
-    def insert_mysql_data(self, table):
-        pass
-    def insert_mysql_data(self, data : DataFrame, table_name : str, symbol : str) -> str:
+    # def insert_mysql_data(self, table):
+    #     pass
+    def insert_mysql_data(self, data : DataFrame, table_name : str, crypto : str) -> str:
         try:
             connection = self.mysql_connection.connect_database()
             cursor = connection.cursor()
             lst = ["daily", "weekly", "monthly"]
-            # ['SYMBOL', 'DATETIME', 'OPEN (CNY)', 'OPEN (USD)', 
-            # 'HIGH (CNY)', 'HIGH (USD)', 'LOW (CNY)', 'LOW (USD)', 
-            # 'CLOSE (CNY)', 'CLOSE (USD)', 'VOLUME', 'MARKET CAP (USD)']
-
+            #['CRYPTO', 'DATETIME', 'OPEN (USD)', 'HIGH (USD)', 
+            # 'LOW (USD)', 'CLOSE (USD)', 'VOLUME', 'MARKET CAP (USD)']
             try:
                 if table_name in lst:
                     for index,row in data.iterrows():  
@@ -43,9 +41,9 @@ class Data_to_SQL(object):
                         sql = "INSERT INTO " + table_name + "(crypto, datetime, open, high, low, close, volume, marketcap)" + " VALUES" + str(tuple(row))
                         cursor.execute(sql)
                         connection.commit()
-                    print(symbol + " data has already been updated into the " + table_name + " table! ")
+                    print(crypto + " data has already been updated into the " + table_name + " table! ")
             except:
-                raiseExceptions(symbol + " failed to add to databse. ")
+                raiseExceptions(crypto + " failed to add to databse. ")
             # elif table_name in lst:
             #     for index,row in data.iterrows():  
             #         row.datetime = row.datetime.strftime("%Y-%m-%d")
