@@ -132,7 +132,7 @@ class CryptoAPI(object):
             for i in range(r):
                 symbol_list.append(crypto)
 
-            crypto_day_time_data_full.insert(loc=0,column='SYMBOL',value=symbol_list)
+            crypto_day_time_data_full.insert(loc=0,column='CRYPTO',value=symbol_list)
             
             #print(crypto_day_time_data_full)
             print(crypto_info,"\n")
