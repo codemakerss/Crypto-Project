@@ -62,6 +62,14 @@ class CryptoAPI(object):
             end = time.time()
             time_cost= end - start
 
+            # reconstruct dataframe to match with the mysql database format
+            symbol_list = []
+            r,c = crypto_interval_data_full.shape
+            for i in range(r):
+                symbol_list.append(crypto)
+
+            crypto_interval_data_full.insert(loc=0,column='CRYPTO',value=symbol_list)
+
             # show information about the data output and time cost
             print(crypto_info,"\n")
             print("time cose : ", time_cost, "\n")
@@ -140,7 +148,7 @@ class CryptoAPI(object):
             
             return crypto_day_time_data_full
         except:
-            raise Exception("Fail to retrieve " + crypto + "data !")
+            raise Exception("Fail to retrieve " + crypto + " data !")
 
     
 
