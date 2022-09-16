@@ -123,7 +123,18 @@ class CryptoAPI(object):
             end = time.time()
             time_cost= end - start
 
-            # show information about the data output and time cost
+            # reconstruct dataframe to match with the mysql database format
+            crypto_day_time_data_full.reset_index(inplace=True)
+            crypto_day_time_data_full = crypto_day_time_data_full.rename(columns = {'index':'DATETIME'})
+            # add symbol column 
+            symbol_list = []
+            r,c = crypto_day_time_data_full.shape
+            for i in range(r):
+                symbol_list.append(crypto)
+
+            crypto_day_time_data_full.insert(loc=0,column='SYMBOL',value=symbol_list)
+            
+            #print(crypto_day_time_data_full)
             print(crypto_info,"\n")
             print("time cose : ", time_cost, "\n")
             
