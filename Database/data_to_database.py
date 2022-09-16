@@ -29,7 +29,7 @@ class Data_to_SQL(object):
     #     pass
     def insert_mysql_data(self, data : DataFrame, table_name : str, crypto : str) -> str:
         try:
-            connection = self.mysql_connection.connect_database()
+            connection = self.mysql_connection
             cursor = connection.cursor()
             lst = ["daily", "weekly", "monthly"]
             #['CRYPTO', 'DATETIME', 'OPEN (USD)', 'HIGH (USD)', 
