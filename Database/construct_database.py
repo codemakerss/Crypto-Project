@@ -1,3 +1,4 @@
+from logging import raiseExceptions
 from pandas.core.frame import DataFrame
 import mysql.connector
 from mysql.connector import ProgrammingError
@@ -131,6 +132,35 @@ class MySQL_Database(object):
             mysql_connection.close()
         except Error as e:
             raise(e)
+    
+    def reconstruct_inputs(self, original_input : DataFrame):
+        """
+        reconstruct the database inputs 
+
+        Parameters 
+        ----------
+        original_input : DataFrame
+            original data from the api port online  
+        
+        Raises
+        ----------
+        raise mysql.connector errors 
+        """
+
+        # ['SYMBOL', 'DATETIME', 'OPEN (CNY)', 'OPEN (USD)', 
+        # 'HIGH (CNY)', 'HIGH (USD)', 'LOW (CNY)', 'LOW (USD)', 
+        # 'CLOSE (CNY)', 'CLOSE (USD)', 'VOLUME', 'MARKET CAP (USD)']
+        try:
+            col_name = list(original_input)
+            # remove index 3,5,7,9
+            remove_index = [3,5,7,9]
+            for i in remove_index:
+                original_input.pop(col_name[i - 1])
+        except:
+            raiseExceptions("Fail to reconstruct the original data.")
+
+        return original_input
+        
 
 
     
