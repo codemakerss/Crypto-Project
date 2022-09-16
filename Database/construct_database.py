@@ -87,13 +87,13 @@ class MySQL_Database(object):
         # 'VOLUME','MARKET CAP (USD)']
         try:
             if table_name == 'daily' or table_name == 'weekly' or table_name == 'monthly':
-                table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATE, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume int(11), marketcap int(11))'
+                table_datatype = '(id INT(15) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATE, open DECIMAL(15,5), high DECIMAL(15,5), low DECIMAL(15,5), close DECIMAL(15,5), volume int(15), marketcap int(15))'
             elif table_name == 'intraday':
-                table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATETIME, open DECIMAL(10,5), high DECIMAL(10,5), low DECIMAL(10,5), close DECIMAL(10,5), volume INT(11))'
+                table_datatype = '(id INT(15) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(255) NOT NULL, datetime DATETIME, open DECIMAL(15,5), high DECIMAL(15,5), low DECIMAL(15,5), close DECIMAL(15,5), volume INT(15))'
             elif table_name == 'digitalcurrencylist':
-                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(225) NOT NULL, name VARCHAR(225))'   
+                 table_datatype = '(id INT(15) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(225) NOT NULL, name VARCHAR(225))'   
             elif table_name == 'physicalcurrencylist':
-                 table_datatype = '(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(225) NOT NULL, name VARCHAR(225))' 
+                 table_datatype = '(id INT(15) NOT NULL AUTO_INCREMENT PRIMARY KEY, crypto VARCHAR(225) NOT NULL, name VARCHAR(225))' 
             # elif table_name == 'Digital Currency Name':
             #     table_datatype = '(symbol VARCHAR(225) NOT NULL, name VARCHAR(225), exchange VARCHAR(225), assetType VARCHAR(225), ipoDate DATE, delistingDate DATE NULL DEFAULT NULL, status VARCHAR(225), PRIMARY KEY (symbol))'  
             # elif table_name == 'Market Code':
