@@ -42,23 +42,20 @@ class Data_to_SQL(object):
                         cursor.execute(sql)
                         connection.commit()
                     print(crypto + " data has already been updated into the " + table_name + " table! ")
-            except:
-                raiseExceptions(crypto + " failed to add to databse. ")
-            # elif table_name in lst:
-            #     for index,row in data.iterrows():  
-            #         row.datetime = row.datetime.strftime("%Y-%m-%d")
-            #         sql = "INSERT INTO " + table_name + "(symbol, datetime, open, high, low, close, adjusted_close, volume, dividend_amt)" + " VALUES" + str(tuple(row))
-            #         cursor.execute(sql)
-            #         connection.commit()
-            #     print(symbol + " data has already been updated into the " + table_name + " table! ")
+            
+                elif table_name == "intraday":
+                    for index,row in data.iterrows():
+                        sql = "INSERT INTO " + table_name + "(crypto, datetime, open, high, low, close, volume)" + " VALUES" + str(tuple(row))
+                        cursor.execute(sql)
+                        connection.commit()
+                    print(crypto+ " data has already been updated into the " + table_name + " table! ")
 
-            # elif table_name == "intraday":
-            #     for index,row in data.iterrows():
-            #         sql = "INSERT INTO " + table_name + "(symbol, datetime, open, high, low, close, volume)" + " VALUES" + str(tuple(row))
-            #         cursor.execute(sql)
-            #         connection.commit()
-            #     print(symbol+ " data has already been updated into the " + table_name + " table! ")
+            except Error as e:
+                raise(e)
 
+               
+
+               
             # # use Info_collected classmethod in the API file
             # elif table_name == "company_info":
             #     for index,row in data.iterrows():
