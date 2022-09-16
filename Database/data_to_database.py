@@ -32,12 +32,15 @@ class Data_to_SQL(object):
             connection = self.mysql_connection.connect_database()
             cursor = connection.cursor()
             lst = ["daily", "weekly", "monthly"]
-            #['OPEN (CNY)', 'OPEN (USD)', 'HIGH (CNY)', 'HIGH (USD)', 'LOW (CNY)', 'LOW (USD)', 'CLOSE (CNY)', 'CLOSE (USD)', 'VOLUME', 'MARKET CAP (USD)']
+            # ['SYMBOL', 'DATETIME', 'OPEN (CNY)', 'OPEN (USD)', 
+            # 'HIGH (CNY)', 'HIGH (USD)', 'LOW (CNY)', 'LOW (USD)', 
+            # 'CLOSE (CNY)', 'CLOSE (USD)', 'VOLUME', 'MARKET CAP (USD)']
+
             try:
                 if table_name in lst:
                     for index,row in data.iterrows():  
                         #row.datetime = row.datetime.strftime("%Y-%m-%d")
-                        sql = "INSERT INTO " + table_name + "(symbol, datetime, open, high, low, close, volume)" + " VALUES" + str(tuple(row))
+                        sql = "INSERT INTO " + table_name + "(crypto, datetime, open, high, low, close, volume, marketcap)" + " VALUES" + str(tuple(row))
                         cursor.execute(sql)
                         connection.commit()
                     print(symbol + " data has already been updated into the " + table_name + " table! ")
